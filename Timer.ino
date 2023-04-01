@@ -4,6 +4,7 @@
 #include <EEPROM.h>
 
 #define TIME 60
+#define RETRY_AFTER 5
 
 //Variables
 int i = 0;
@@ -72,11 +73,17 @@ void setup_password() {
   Serial.println();
   Serial.println("Waiting.");
 
+  int timer_counter = 0;
   while ((WiFi.status() != WL_CONNECTED)) {
     Serial.print(".");
-    delay(100);
     server.handleClient();
+    if (timer_counter >= (RETRY_AFTER * 60 * 1000)){
+      break;
+    }
+    delay(100);
+    timer_counter += 100;  
   }
+  setup_password();
 }
 
 
