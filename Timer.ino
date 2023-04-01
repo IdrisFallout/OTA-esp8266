@@ -71,11 +71,14 @@ void setup_password() {
   }
 
   Serial.println();
-  Serial.println("Waiting.");
+  Serial.println("Waiting");
 
   int timer_counter = 0;
   while ((WiFi.status() != WL_CONNECTED)) {
     Serial.print(".");
+    if((timer_counter % 5000) == 0){
+      Serial.println();
+    }
     server.handleClient();
     if (timer_counter >= (RETRY_AFTER * 60 * 1000)){
       break;
